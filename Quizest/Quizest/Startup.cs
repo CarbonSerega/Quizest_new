@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.IO;
+using NLog;
 using Quizest.Extensions;
 
 namespace Quizest
@@ -12,6 +14,8 @@ namespace Quizest
     {
         public Startup(IConfiguration configuration)
         {
+            LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
+            
             Configuration = configuration;
         }
 
@@ -21,6 +25,7 @@ namespace Quizest
         {
             services.ConfigureCors();
             services.ConfigureIISIntegration();
+            services.ConfigureLoggerService();
 
             services.AddControllers();
         }

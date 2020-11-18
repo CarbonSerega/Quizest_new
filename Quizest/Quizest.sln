@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quizest", "Quizest\Quizest.csproj", "{80D19C8F-5856-459D-A9D1-9C9F0632EF0F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{C3C343E0-6251-49FA-A110-CB681CB3A420}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{6820A964-6C32-4E49-AE0F-2E0C0D56E16A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{80D19C8F-5856-459D-A9D1-9C9F0632EF0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80D19C8F-5856-459D-A9D1-9C9F0632EF0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80D19C8F-5856-459D-A9D1-9C9F0632EF0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3C343E0-6251-49FA-A110-CB681CB3A420}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3C343E0-6251-49FA-A110-CB681CB3A420}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3C343E0-6251-49FA-A110-CB681CB3A420}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3C343E0-6251-49FA-A110-CB681CB3A420}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6820A964-6C32-4E49-AE0F-2E0C0D56E16A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6820A964-6C32-4E49-AE0F-2E0C0D56E16A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6820A964-6C32-4E49-AE0F-2E0C0D56E16A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6820A964-6C32-4E49-AE0F-2E0C0D56E16A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
