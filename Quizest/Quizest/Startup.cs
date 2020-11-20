@@ -26,6 +26,8 @@ namespace Quizest
             services.ConfigureCors();
             services.ConfigureIISIntegration();
             services.ConfigureLoggerService();
+            services.ConfigureSqlContext(Configuration);
+            services.ConfigureSQLRepositoryManager();
 
             services.AddControllers();
         }
