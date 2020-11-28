@@ -17,6 +17,10 @@ namespace Entities
 
         public DbSet<AnswerInfo> AnswerInfos { get; set; }
 
+        public DbSet<TemporaryLink> TemporaryLinks { get; set; }
+
+        public DbSet<GlobalSettings> GlobalSettings { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<QuizInfoUser>()

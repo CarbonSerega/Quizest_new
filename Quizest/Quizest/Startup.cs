@@ -28,6 +28,7 @@ namespace Quizest
             services.ConfigureLoggerService();
             services.ConfigureSqlContext(Configuration);
             services.ConfigureSQLRepositoryManager();
+            services.ConfigureMongoConnectionService(Configuration);
 
             services.AddControllers();
         }

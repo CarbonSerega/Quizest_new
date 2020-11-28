@@ -2,10 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Contracts;
 using Entities;
 using LoggerService;
 using Repository;
+using Repository.MongoServices;
 
 namespace Quizest.Extensions
 {
@@ -29,5 +31,16 @@ namespace Quizest.Extensions
 
         public static void ConfigureSQLRepositoryManager(this IServiceCollection services) 
             => services.AddScoped<ISQLRepositoryManager, SQLRepositoryManager>();
+
+        public static void ConfigureMongoConnectionService(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<MongoDbSettings>(
+                configuration.GetSection(nameof(MongoDbSettings)));
+
+            services.AddSingleton<IMongoDbSettings>(sp =>
+                sp.GetRequiredService<IOptions<MongoDbSettings>>().Value);
+
+            services.AddSingleton<QuizService>();
+        }
     }
 }

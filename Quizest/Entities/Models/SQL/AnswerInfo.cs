@@ -7,6 +7,9 @@ namespace Entities.Models.SQL
     [Table(nameof(AnswerInfo))]
     public class AnswerInfo : SqlEntityBase
     {
+        [JsonIgnore]
+        public string AttemptId { get; set; }
+
         public int AmountOfCorrectQuestions { get; set; }
 
         public TimeSpan? SpentTime { get; set; }

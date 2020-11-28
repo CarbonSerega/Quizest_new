@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Entities.Models.SQL.QuizInfoUser">
+    <Position X="6.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAQAAAAAAAAAAAgAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Models\SQL\QuizInfoUser.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="User" />
+      <Property Name="QuizInfo" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Entities.Models.SQL.SqlEntityBase" Collapsed="true">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\SQL\SqlEntityBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Models.SQL.User">
+    <Position X="0.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAEAAACAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Models\SQL\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Models.SQL.QuizInfo">
+    <Position X="8.25" Y="2.75" Width="1.5" />
+    <AssociationLine Name="TemporaryLink" Type="Entities.Models.SQL.TemporaryLink">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="1.048" Y="0.154" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAACIAAAiCBAAACAwAGQAJAAAAQAAAAAAAgAAAEA=</HashCode>
+      <FileName>Models\SQL\QuizInfo.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TemporaryLink" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Entities.Models.SQL.AnswerInfo">
+    <Position X="4.25" Y="5.5" Width="1.5" />
+    <InheritanceLine Type="Entities.Models.SQL.SqlEntityBase" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="5" Y="1.062" />
+        <Point X="5" Y="5.375" />
+        <Point X="5.062" Y="5.375" />
+        <Point X="5.062" Y="5.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAQAAAAAAAACAAgAAAAAIAAAAACAQAAEAAA=</HashCode>
+      <FileName>Models\SQL\AnswerInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Models.SQL.TemporaryLink">
+    <Position X="2.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Models\SQL\TemporaryLink.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Models.SQL.GlobalSettings">
+    <Position X="2" Y="0.75" Width="1.5" />
+    <InheritanceLine Type="Entities.Models.SQL.SqlEntityBase" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5" Y="1.062" />
+        <Point X="5" Y="2" />
+        <Point X="3.5" Y="2" />
+      </Path>
+    </InheritanceLine>
+    <AssociationLine Name="User" Type="Entities.Models.SQL.User" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2" Y="1.625" />
+        <Point X="0.375" Y="1.625" />
+        <Point X="0.375" Y="4.188" />
+        <Point X="0.75" Y="4.188" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAABAAAACAAAAAAAAAAAAAgAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\SQL\GlobalSettings.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="User" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="Entities.Models.SQL.Role">
+    <Position X="0.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\SQL\Role.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Entities.Models.SQL.Complexity">
+    <Position X="6.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAgAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Models\SQL\Complexity.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

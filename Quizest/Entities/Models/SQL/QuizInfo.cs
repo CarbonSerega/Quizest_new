@@ -15,6 +15,10 @@ namespace Entities.Models.SQL
         [StringLength(100, MinimumLength = 5)]
         public string Name { get; set; }
 
+        // Quiz id key for Mongo entity
+        [JsonIgnore]
+        public string QuizId { get; set; }
+
         [MaxLength(1000)]
         public string Description { get; set; }
 
@@ -37,11 +41,20 @@ namespace Entities.Models.SQL
 
         public DateTime? ClosedAt { get; set; }
 
+        [Required]
+        public int AttemptCount { get; set; }
+
         [JsonIgnore]
         public virtual User Owner { get; set; }
 
         [ForeignKey(nameof(OwnerId))]
         public Guid? OwnerId { get; set; }
+
+        [JsonIgnore]
+        public virtual TemporaryLink TemporaryLink { get; set; }
+
+        [ForeignKey(nameof(TemporaryLinkId))]
+        public Guid? TemporaryLinkId { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<QuizInfoUser> QuizInfoUsers { get; set; }

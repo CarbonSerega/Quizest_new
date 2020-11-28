@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Entities.Models.Mongo.Answer">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <AssociationLine Name="ChosenAnswers" Type="Entities.Models.Mongo.ChosenAnswer" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.75" Y="1.812" />
+        <Point X="3.333" Y="1.812" Type="JumpStart" />
+        <Point X="3.167" Y="1.812" Type="JumpEnd" />
+        <Point X="0.844" Y="1.812" />
+        <Point X="0.844" Y="4.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Mongo\Answer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="ChosenAnswers" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Entities.Models.Mongo.Choice">
+    <Position X="3" Y="4.75" Width="1.5" />
+    <InheritanceLine Type="Entities.Models.Mongo.MongoEntityBase" ManuallyRouted="true">
+      <Path>
+        <Point X="3.25" Y="1.062" />
+        <Point X="3.25" Y="1.896" />
+        <Point X="1.75" Y="1.896" />
+        <Point X="1.75" Y="3.808" />
+        <Point X="3.75" Y="3.808" />
+        <Point X="3.75" Y="4.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAKACAAAAAA=</HashCode>
+      <FileName>Models\Mongo\Choice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Models.Mongo.ChosenAnswer">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <InheritanceLine Type="Entities.Models.Mongo.MongoEntityBase" ManuallyRouted="true">
+      <Path>
+        <Point X="3.25" Y="1.062" />
+        <Point X="3.25" Y="1.896" />
+        <Point X="1.76" Y="1.896" />
+        <Point X="1.76" Y="4.125" />
+        <Point X="1.25" Y="4.125" />
+        <Point X="1.25" Y="4.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Models\Mongo\ChosenAnswer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Models.Mongo.MongoEntityBase" Collapsed="true">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Mongo\MongoEntityBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Models.Mongo.Question">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAABAAAAIAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Models\Mongo\Question.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Choices" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Entities.Models.Mongo.Quiz">
+    <Position X="8" Y="1.5" Width="1.5" />
+    <AssociationLine Name="Questions" Type="Entities.Models.Mongo.Question">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.193" Y="0.341" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAABEAAAA=</HashCode>
+      <FileName>Models\Mongo\Quiz.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="QuizSettings" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Questions" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Entities.Models.Mongo.QuizSettings">
+    <Position X="9.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAACAAAAAAAAAAIAwABAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Mongo\QuizSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Models.Mongo.Attempt">
+    <Position X="3.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Models\Mongo\Attempt.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Answers" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Enum Name="Entities.Models.Mongo.QuestionType">
+    <Position X="5.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAEEAAAAAA=</HashCode>
+      <FileName>Models\Mongo\QuestionType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
