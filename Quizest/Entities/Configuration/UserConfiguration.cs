@@ -2,6 +2,7 @@
 using Entities.Models.SQL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Utility;
 
 namespace Entities.Configuration
 {
@@ -25,7 +26,7 @@ namespace Entities.Configuration
                     FirstName = "OwnerFirstName",
                     LastName = "OwnerLastName",
                     Email = "owner_email@example.com",
-                    AvatarPath = "",
+                    AvatarPath = DirType.Avatars + "ava.jpg",
                     Role = Role.User
                 }
             );

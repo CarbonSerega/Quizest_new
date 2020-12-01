@@ -728,3 +728,7 @@ MigrationBackup/
 
 # Prevent to push the appsettings.* files
 **/appsettings.*
+
+**/Migrations/**
+
+QuizestFileStorage/**

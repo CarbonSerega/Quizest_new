@@ -14,7 +14,8 @@ namespace Entities.Configuration
                 {
                     Id = new Guid("004EFCBD-4197-4975-9E9E-1FEB02C8D431"),
                     UserId = new Guid("004EFCBD-4197-4975-9E9E-1FEB02C8D429"),
-                    QuizInfoId = new Guid("004EFCBD-4197-4975-9E9E-1FEB02C8D430")
+                    QuizInfoId = new Guid("004EFCBD-4197-4975-9E9E-1FEB02C8D430"),
+                    StartDate = null
                 }
             );
         }

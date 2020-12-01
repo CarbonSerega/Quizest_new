@@ -15,5 +15,7 @@ namespace Entities.Models.SQL
         public Guid QuizInfoId { get; set; }
 
         public virtual QuizInfo QuizInfo { get; set; }
+
+        public DateTime? StartDate { get; set; }
     }
 }

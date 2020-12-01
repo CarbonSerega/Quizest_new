@@ -31,7 +31,7 @@ namespace Entities.Models.SQL
         [Newtonsoft.Json.JsonConverter(typeof(StringEnumConverter))]
         public Complexity? Complexity { get; set; }
 
-        public TimeSpan Duration { get; set; }
+        public int? Duration { get; set; }
 
         public bool? IsLiked { get; set; }
 
@@ -41,8 +41,7 @@ namespace Entities.Models.SQL
 
         public DateTime? ClosedAt { get; set; }
 
-        [Required]
-        public int AttemptCount { get; set; }
+        public int? AttemptCount { get; set; }
 
         [JsonIgnore]
         public virtual User Owner { get; set; }

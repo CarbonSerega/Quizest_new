@@ -1,12 +1,15 @@
+using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.IO;
 using NLog;
 using Quizest.Extensions;
+using AutoMapper;
+using Contracts;
+using Utility;
 
 namespace Quizest
 {
@@ -17,6 +20,10 @@ namespace Quizest
             LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
             
             Configuration = configuration;
+
+            FileUtils.BasePath = configuration.GetValue<string>(WebHostDefaults.ContentRootKey);
+
+            FileUtils.InitFileStorageDirectories();
         }
 
         public IConfiguration Configuration { get; }
@@ -25,20 +32,24 @@ namespace Quizest
         {
             services.ConfigureCors();
             services.ConfigureIISIntegration();
+            services.ConfigureApiBehavior();
             services.ConfigureLoggerService();
             services.ConfigureSqlContext(Configuration);
             services.ConfigureSQLRepositoryManager();
             services.ConfigureMongoConnectionService(Configuration);
+            services.AddAutoMapper(System.AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddControllers();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager loggerManager)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.ConfigureExceptionHandler(loggerManager);
 
             app.UseHttpsRedirection();
 

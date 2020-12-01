@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Contracts;
 using Entities;
+using Entities.Models.SQL;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Repository
 {
-    public abstract class SQLRepositoryBase<T> : ISQLRepositoryBase<T> where T : class
+    public abstract class SQLRepositoryBase<T> : ISQLRepositoryBase<T> where T : SqlEntityBase
     {
         protected RepositoryContext repositoryContext;
 
@@ -26,7 +29,7 @@ namespace Repository
                ? repositoryContext.Set<T>().Where(expression).AsNoTracking()
                : repositoryContext.Set<T>().Where(expression);
 
-        public void Create(T entity) => repositoryContext.Set<T>().Add(entity);
+        public async Task<EntityEntry<T>> Create(T entity) => await repositoryContext.Set<T>().AddAsync(entity);
 
         public void Update(T entity) => repositoryContext.Set<T>().Update(entity);
 

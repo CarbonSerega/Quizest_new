@@ -8,6 +8,8 @@ using Entities;
 using LoggerService;
 using Repository;
 using Repository.MongoServices;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace Quizest.Extensions
 {
@@ -26,7 +28,8 @@ namespace Quizest.Extensions
 
         public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)
             => services.AddDbContext<RepositoryContext>(o 
-                => o.UseSqlServer(configuration.GetConnectionString("QuizestApplicationDB"), b
+                => o.UseLazyLoadingProxies()
+                    .UseSqlServer(configuration.GetConnectionString("QuizestApplicationDB"), b
                     => b.MigrationsAssembly("Quizest")));
 
         public static void ConfigureSQLRepositoryManager(this IServiceCollection services) 
@@ -42,5 +45,26 @@ namespace Quizest.Extensions
 
             services.AddSingleton<QuizService>();
         }
+
+        public static void ConfigureApiBehavior(this IServiceCollection services) =>
+            services.Configure<ApiBehaviorOptions>(o =>
+            {
+                o.InvalidModelStateResponseFactory = actionContext =>
+                {
+                    var errors = actionContext.ModelState
+                    .Where(e => e.Value.Errors.Count > 0)
+                    .Select(e => e.Value.Errors)
+                    .Select(e => e[0].ErrorMessage);
+
+                    var errorObject = new
+                    {
+                        message = "Validation Error!",
+                        details = errors
+                    };
+
+                    return new BadRequestObjectResult(errorObject);
+                };
+            });
+
     }
 }
