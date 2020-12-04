@@ -1,13 +1,12 @@
-﻿using System.Threading.Tasks;
-using Entities.Models.Mongo;
+﻿using Entities.Models.Mongo;
 using MongoDB.Driver;
 
 namespace Contracts.Repos.Mongo
 {
-    public interface IMongoServiceBase
+    public interface IMongoService
     {
-        Task<Quiz> Get(string id);
-        Task<string> Create(Quiz quiz);
+        Quiz Get(string id);
+        string Create(Quiz quiz = null);
         void Update(string id, Quiz entity);
         void Update(FilterDefinition<Quiz> filter, UpdateDefinition<Quiz> update);
         void Remove(string id);

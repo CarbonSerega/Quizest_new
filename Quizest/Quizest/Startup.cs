@@ -39,7 +39,12 @@ namespace Quizest
             services.ConfigureMongoConnectionService(Configuration);
             services.AddAutoMapper(System.AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddControllers();
+            services.AddControllers(config => 
+            { 
+                config.RespectBrowserAcceptHeader = true;
+                config.ReturnHttpNotAcceptable = true;
+
+            }).AddXmlDataContractSerializerFormatters();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager loggerManager)

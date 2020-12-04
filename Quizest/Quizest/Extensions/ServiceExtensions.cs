@@ -1,15 +1,16 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Mvc;
 using Contracts;
 using Entities;
 using LoggerService;
 using Repository;
 using Repository.MongoServices;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+using Contracts.Repos.Mongo;
 
 namespace Quizest.Extensions
 {
@@ -43,7 +44,7 @@ namespace Quizest.Extensions
             services.AddSingleton<IMongoDbSettings>(sp =>
                 sp.GetRequiredService<IOptions<MongoDbSettings>>().Value);
 
-            services.AddSingleton<QuizService>();
+            services.AddScoped<IMongoService, QuizService>();
         }
 
         public static void ConfigureApiBehavior(this IServiceCollection services) =>

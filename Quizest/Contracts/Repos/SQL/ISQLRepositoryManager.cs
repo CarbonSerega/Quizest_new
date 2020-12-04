@@ -1,10 +1,11 @@
-﻿namespace Contracts
+﻿using Entities.Models.SQL;
+
+namespace Contracts
 {
     public interface ISQLRepositoryManager
     {
-        IUserRepository UserRepository { get; }
-        IQuizInfoRepository QuizInfoRepository { get; }
-        IAnswerInfoRepository AnswerInfoRepository { get; }
+        ISQLRepositoryBase<T> Repository<T>() where T : SqlEntityBase;
+
         void Save();
     }
 }
