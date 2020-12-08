@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Contracts;
 using Entities;
 using Entities.Models.SQL;
+using System.Linq;
 
 namespace Repository
 {
@@ -17,14 +18,11 @@ namespace Repository
             this.repositoryContext = repositoryContext;
         }
 
-        public async Task<T> FindAll()
-            => await repositoryContext.Set<T>().FindAsync();
+        public IQueryable<T> FindAll() => repositoryContext.Set<T>();
 
-        public async Task<T> FindBy(Expression<Func<T, bool>> expression)
-            => await repositoryContext.Set<T>().FindAsync(expression);
+        public IQueryable<T> FindBy(Expression<Func<T, bool>> expression) => repositoryContext.Set<T>().Where(expression);
 
-        public async Task<EntityEntry<T>> Create(T entity) 
-            => await repositoryContext.Set<T>().AddAsync(entity);
+        public async Task<EntityEntry<T>> Create(T entity) => await repositoryContext.Set<T>().AddAsync(entity);
 
         public void Update(T entity) => repositoryContext.Set<T>().Update(entity);
 

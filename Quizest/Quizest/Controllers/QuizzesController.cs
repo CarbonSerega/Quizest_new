@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Contracts;
@@ -7,6 +8,7 @@ using Contracts.Repos.Mongo;
 using Entities.DTO;
 using Entities.Models.SQL;
 using Microsoft.AspNetCore.Mvc;
+using Utility;
 
 namespace Quizest.Controllers
 {
@@ -16,21 +18,19 @@ namespace Quizest.Controllers
     {
         private readonly ISQLRepositoryManager manager;
         private readonly IMongoService mongo;
-        private readonly ILoggerManager logger;
         private readonly IMapper mapper;
 
-        public QuizzesController(ISQLRepositoryManager manager, IMongoService mongo, ILoggerManager logger, IMapper mapper) 
+        public QuizzesController(ISQLRepositoryManager manager, IMongoService mongo, IMapper mapper) 
         { 
             this.manager = manager;
             this.mongo = mongo;
-            this.logger = logger;
             this.mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllQuizInfos()
+        public IActionResult GetAllQuizInfos()
         {
-            var quizInfos = await manager.Repository<QuizInfo>().FindAll();
+            var quizInfos = manager.Repository<QuizInfo>().FindAll();
 
             var quizInfosDto = mapper.Map<IEnumerable<QuizInfoDto>>(quizInfos);
 
@@ -38,70 +38,94 @@ namespace Quizest.Controllers
         }
 
         [HttpGet("{id}", Name = "QuizInfoById")]
-        public async Task<IActionResult> GetQuizInfoById(Guid id)
+        public IActionResult GetQuizInfoById(Guid id)
         {
-            var quizInfo = await manager.Repository<QuizInfo>().FindBy(q => q.Id == id);
+            var quizInfo = manager.Repository<QuizInfo>().FindBy(q => q.Id == id).SingleOrDefault();
 
-            if (quizInfo == null) 
-            { 
-                logger.LogInfo($"Quiz with id {id} doesn't exist."); 
-                return NotFound($"Quiz with id {id} doesn't exist"); 
+            if (quizInfo == null)
+            {
+                return NotFound(Constants.QuizDoesNotExist(id));
             }
 
-            var quizInfoDto = mapper.Map<QuizInfoDto>(quizInfo); 
+            var quizInfoDto = mapper.Map<QuizInfoDto>(quizInfo);
+
+            return Ok(quizInfoDto);
+        }
+
+        [HttpGet("generated/{temporaryLinkParam}")]
+        public IActionResult GetQuizByTemporaryLink(string temporaryLinkParam)
+        {
+            var quizInfo = manager.Repository<QuizInfo>().FindBy(q => q.TemporaryLink.Link.Equals(temporaryLinkParam)).SingleOrDefault();
+
+            if(quizInfo == null)
+            {
+                return NotFound(Constants.QuizUnderLinkDoesNotExist(temporaryLinkParam));
+            }
+
+            var quizInfoDto = mapper.Map<QuizInfoDto>(quizInfo);
 
             return Ok(quizInfoDto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateQuiz([FromBody] QuizInfoForCreationDto inputQuizInfo)
+        public async Task<IActionResult> CreateQuiz([FromForm] QuizInfoForCreationDto inputQuizInfo)
         {
-            if(inputQuizInfo == null)
+            if (inputQuizInfo == null)
             {
-                logger.LogError($"{nameof(QuizInfoForCreationDto)} object sent from client is null.");
-                return BadRequest("Quiz data cannot be empty");
+                return BadRequest(Constants.QuizDataEmpty);
             }
 
             var quizInfoEntity = mapper.Map<QuizInfo>(inputQuizInfo);
 
-            quizInfoEntity.CreatedAt = DateTime.Now;
+            if (inputQuizInfo.PreviewImage != null)
+            {
+                if (!FileUtils.IsPreviewValid(inputQuizInfo.PreviewImage))
+                {
+                    return BadRequest(Constants.InvalidImage);
+                }
+
+                quizInfoEntity.PreviewPath = await FileUtils.SaveAsync(DirType.Previews, inputQuizInfo.PreviewImage);
+            }
+
+            string queryParam = RandomGenerator.GenerateHexKey();
 
             var temporaryLink = await manager.Repository<TemporaryLink>().Create(new TemporaryLink
             {
-                Link = "http://test-link"
+                Link = queryParam
             });
-
-            if(temporaryLink == null)
-            {
-                logger.LogError($"The field TemporaryLink of {nameof(QuizInfoForCreationDto)} is already exists.");
-                return BadRequest("This tamporary link is already exists");
-            }
 
             quizInfoEntity.TemporaryLink = temporaryLink.Entity;
 
-            if(quizInfoEntity.OwnerId == null)
+            quizInfoEntity.CreatedAt = DateTime.Now;
+
+            if (quizInfoEntity.OwnerId == null)
             {
-                logger.LogError($"The Owner of {nameof(QuizInfoForCreationDto)} entity is null.");
-                return BadRequest("Owner cannot be null");
+                return BadRequest(Constants.OwnerNull);
             }
 
-            quizInfoEntity.Owner = await manager.Repository<User>()
-                .FindBy(u => u.Id == quizInfoEntity.OwnerId.Value);
+            quizInfoEntity.Owner =  manager.Repository<User>()
+                .FindBy(u => u.Id == quizInfoEntity.OwnerId.Value).SingleOrDefault();
 
-            string mongoId = mongo.Create();
-
-            if(string.IsNullOrEmpty(mongoId))
-            {
-                logger.LogError($"The Mongo Id of {nameof(QuizInfoForCreationDto)} entity and related quiz is null.");
-                return BadRequest("Can not create a Quiz entity in MongoDB");
-            }
+            string mongoId = RandomGenerator.GenerateHexKey();
 
             quizInfoEntity.QuizId = mongoId;
 
             await manager.Repository<QuizInfo>().Create(quizInfoEntity);
+
             manager.Save();
 
+            mongoId = mongo.Create(mongoId);
+
+            if (string.IsNullOrEmpty(mongoId))
+            {
+                return BadRequest(Constants.MongoDbCreationFailure(nameof(Entities.Models.Mongo.Quiz)));
+            }
+
             var result = mapper.Map<QuizInfoForOwnerDto>(quizInfoEntity);
+
+            var request = HttpContext.Request;
+
+            result.TemporaryLink = LinkUtils.GenerateTemporaryLink(request.IsHttps, request.Host.Value, request.Path, queryParam); ;
 
             return CreatedAtRoute("QuizInfoById", new { id = result.Id }, result);
         }

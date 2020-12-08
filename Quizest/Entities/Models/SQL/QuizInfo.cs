@@ -22,6 +22,8 @@ namespace Entities.Models.SQL
         [MaxLength(1000)]
         public string Description { get; set; }
 
+        public string PreviewPath { get; set; }
+
         public int? AmountOfPasses { get; set; }
 
         public int? AmountOfLikes { get; set; }
@@ -37,7 +39,7 @@ namespace Entities.Models.SQL
 
         public DateTime CreatedAt { get; set; }
 
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
         public DateTime? ClosedAt { get; set; }
 

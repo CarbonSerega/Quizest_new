@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using Entities.DTO;
 using Entities.Models.SQL;
 using Utility;
@@ -12,45 +11,40 @@ namespace Entities.MappingProfiles
         {
             var map = CreateMap<QuizInfo, QuizInfoDto>()
 
-                .ForMember(q => q.Owner, opt => opt.MapFrom(o => new OwnerShortInfoDto
-                {
-                    Id = o.Owner.Id.ToString(),
-                    FullName = $"{o.Owner.FirstName} {o.Owner.LastName}",
-                    AvatarBlobKey = FileUtils.GetContent(o.Owner.AvatarPath)
-                }))
+                .ForMember(q => q.Owner, opt => opt.MapFrom(o => CreateOwnerShortInfoDto(o)))
 
                 .ForMember(q => q.Complexity, opt => opt.MapFrom(o =>
                     o.Complexity == null ? string.Empty : o.Complexity.Value.ToString()))
 
-                .ForMember(q => q.Duration, opt => opt.MapFrom(o =>
-                    o.Duration == null 
-                    ? string.Empty 
-                    : TimeSpan.FromSeconds(o.Duration.Value).Hours == 0 
-                      ? TimeSpan.FromSeconds(o.Duration.Value).ToString(@"mm\:ss")
-                      : TimeSpan.FromSeconds(o.Duration.Value).ToString(@"hh\:mm\:ss")));
+                .ForMember(q => q.Duration, opt => opt.MapFrom(o => DateTimeUtils.ToDuration(o.Duration)))
 
+                .ForMember(q => q.PreviewBlobKey, opt => opt.MapFrom(o => FileUtils.GetContent(o.PreviewPath)));
+
+            
             _ = CreateMap<QuizInfo, QuizInfoForOwnerDto>()
-                .ForMember(q => q.Owner, opt => opt.MapFrom(o => new OwnerShortInfoDto
-                {
-                    Id = o.Owner.Id.ToString(),
-                    FullName = $"{o.Owner.FirstName} {o.Owner.LastName}",
-                    AvatarBlobKey = FileUtils.GetContent(o.Owner.AvatarPath)
-                }))
+
+                .ForMember(q => q.Owner, opt => opt.MapFrom(o => CreateOwnerShortInfoDto(o)))
 
                 .ForMember(q => q.Complexity, opt => opt.MapFrom(o =>
                     o.Complexity == null ? string.Empty : o.Complexity.Value.ToString()))
 
-                .ForMember(q => q.Duration, opt => opt.MapFrom(o =>
-                    o.Duration == null
-                    ? string.Empty
-                    : TimeSpan.FromSeconds(o.Duration.Value).Hours == 0
-                      ? TimeSpan.FromSeconds(o.Duration.Value).ToString(@"mm\:ss")
-                      : TimeSpan.FromSeconds(o.Duration.Value).ToString(@"hh\:mm\:ss")))
+                .ForMember(q => q.Duration, opt => opt.MapFrom(o => DateTimeUtils.ToDuration(o.Duration)))
 
-                .ForMember(q => q.TemporaryLink, opt => opt.MapFrom(o => o.TemporaryLink.Link));
+                .ForMember(q => q.TemporaryLink, opt => opt.MapFrom(o => o.TemporaryLink.Link))
+
+                .ForMember(q => q.PreviewBlobKey, opt => opt.MapFrom(o => FileUtils.GetContent(o.PreviewPath)));
 
 
             _ = CreateMap<QuizInfoForCreationDto, QuizInfo>();
         }
+
+        private OwnerShortInfoDto CreateOwnerShortInfoDto(QuizInfo quizInfo)
+            => new OwnerShortInfoDto
+            {
+                Id = quizInfo.Owner.Id.ToString(),
+                FirstName = quizInfo.Owner.FirstName,
+                LastName = quizInfo.Owner.LastName,
+                AvatarBlobKey = FileUtils.GetContent(quizInfo.Owner.AvatarPath)
+            };
     }
 }

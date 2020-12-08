@@ -26,6 +26,9 @@ namespace Entities
             modelBuilder.Entity<QuizInfoUser>()
                 .HasKey(qu => new { qu.QuizInfoId, qu.UserId });
 
+            modelBuilder.Entity<TemporaryLink>()
+                .HasIndex(t => t.Link).IsUnique();
+
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new QuizInfoUserConfiguration());
             modelBuilder.ApplyConfiguration(new QuizInfoConfiguration());

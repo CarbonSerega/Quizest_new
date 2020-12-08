@@ -6,7 +6,7 @@ namespace Contracts.Repos.Mongo
     public interface IMongoService
     {
         Quiz Get(string id);
-        string Create(Quiz quiz = null);
+        string Create(string id, Quiz quiz = null);
         void Update(string id, Quiz entity);
         void Update(FilterDefinition<Quiz> filter, UpdateDefinition<Quiz> update);
         void Remove(string id);

@@ -20,11 +20,13 @@ namespace Entities.DTO
 
         public string Duration { get; set; }
 
+        public string PreviewBlobKey { get; set; }
+
         public bool? IsLiked { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
         public DateTime? ClosedAt { get; set; }
 

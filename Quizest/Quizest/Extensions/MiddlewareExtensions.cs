@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Entities.Models;
 using Contracts;
+using Utility;
 
 namespace Quizest.Extensions
 {
@@ -20,11 +21,11 @@ namespace Quizest.Extensions
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
                     if (contextFeature != null)
                     {
-                        logger.LogError($"Something went wrong: { contextFeature.Error }");
+                        logger.LogError(contextFeature.Error.Message);
                         await context.Response.WriteAsync(new Error()
                         {
                             StatusCode = context.Response.StatusCode,
-                            Message = "Internal Server Error."
+                            Message = Constants.InternalError
                         }.ToString());
                     }
                 });

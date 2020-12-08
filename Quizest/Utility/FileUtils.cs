@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Utility
@@ -47,12 +49,40 @@ namespace Utility
 
                 string extension = Path.GetExtension(BasePath + path).Remove(0, 1).ToLower();
 
-                output = @$"data:image/{extension};base64," + Convert.ToBase64String(bytes);
+                output = Constants.GetContentType(extension) + Convert.ToBase64String(bytes);
             }
 
             return output;
         }
 
         public static string GetContent(string path) => GetContentAsync(path).Result;
+
+        public static async Task<string> SaveAsync(string dirType, IFormFile formFile)
+        {
+            string relative = dirType 
+                + RandomGenerator.GenerateHexKey(Constants.FileNameLength) 
+                + Path.GetExtension(formFile.FileName);
+
+            using var fileStream = new FileStream(BasePath + relative, FileMode.Create);
+
+            await formFile.CopyToAsync(fileStream);
+
+            return relative;
+        }
+
+        public static bool IsPreviewValid(IFormFile file)
+        {
+            string extension = Path.GetExtension(file.FileName);
+            bool extensionIsValid = Constants.AllowedPreviewExtensions
+                                    .Where(x => extension.ToLower().Equals("." + x))
+                                    .Count() != 0;
+
+            bool contentTypeIsValid = Constants.AllowedPreviewContentTypes
+                                      .Where(x => file.ContentType.ToLower().Equals(Constants.ImagePrefix + x))
+                                      .Count() != 0;
+
+            return extensionIsValid && contentTypeIsValid && file.Length < Constants.MaxPreviewSize;
+        }
+
     }
 }

@@ -1,7 +1,10 @@
-﻿using MongoDB.Driver;
+﻿using System.Linq;
+using MongoDB.Driver;
 using Contracts;
 using Contracts.Repos.Mongo;
 using Entities.Models.Mongo;
+using Utility;
+
 
 namespace Repository.MongoServices
 {
@@ -21,11 +24,11 @@ namespace Repository.MongoServices
              quizzes.Find(q => q.Id.Equals(id)).FirstOrDefault();
        
 
-        public string Create(Quiz quiz = null)
+        public string Create(string id, Quiz quiz = null)
         {
             if(quiz == null)
             {
-                quiz = new Quiz();
+                quiz = new Quiz { Id =  id };
             }
 
             quizzes.InsertOne(quiz);

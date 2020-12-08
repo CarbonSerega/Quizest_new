@@ -1,5 +1,6 @@
 ﻿using System;
 using Entities.Models.SQL;
+using Microsoft.AspNetCore.Http;
 
 namespace Entities.DTO
 {
@@ -18,5 +19,7 @@ namespace Entities.DTO
         public DateTime? ClosedAt { get; set; }
 
         public int? Duration { get; set; }
+
+        public IFormFile PreviewImage { get; set; }
     }
 }
