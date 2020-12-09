@@ -37,6 +37,9 @@ namespace Entities.Models.SQL
 
         public bool? IsLiked { get; set; }
 
+        [Required]
+        public bool IsPublic { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
@@ -52,6 +55,12 @@ namespace Entities.Models.SQL
         public Guid? OwnerId { get; set; }
 
         public string TemporaryLink { get; set; }
+
+        [NotMapped]
+        public bool HasAccessToEdit { get; set; }
+
+        [NotMapped]
+        public bool HasAccessToPass { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<QuizInfoUser> QuizInfoUsers { get; set; }

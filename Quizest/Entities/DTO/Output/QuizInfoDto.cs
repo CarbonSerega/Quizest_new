@@ -24,6 +24,8 @@ namespace Entities.DTO
 
         public bool? IsLiked { get; set; }
 
+        public bool IsPublic { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }

@@ -22,6 +22,9 @@ namespace Entities.Models.SQL
         public string AvatarPath { get; set; }
 
         [Required]
+        public bool IsTemporary { get; set; }
+
+        [Required]
         [Newtonsoft.Json.JsonConverter(typeof(StringEnumConverter))]
         public Role Role { get; set; }
     }

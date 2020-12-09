@@ -1,6 +1,6 @@
 ﻿namespace Entities.DTO
 {
-    public class OwnerShortInfoDto : DtoBase
+    public class OwnerShortInfoDto
     {
         public string FirstName { get; set; }
 

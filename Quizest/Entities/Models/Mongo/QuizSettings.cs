@@ -1,14 +1,7 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-
-namespace Entities.Models.Mongo
+﻿namespace Entities.Models.Mongo
 {
-    public class QuizSettings
+    public class QuizSettings : MongoEntityBase
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
-
         public bool ShowDuration { get; set; }
 
         public bool ShowComplexity { get; set; }

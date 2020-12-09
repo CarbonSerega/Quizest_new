@@ -39,7 +39,6 @@ namespace Entities.MappingProfiles
         private OwnerShortInfoDto CreateOwnerShortInfoDto(QuizInfo quizInfo)
             => new OwnerShortInfoDto
             {
-                Id = quizInfo.Owner.Id.ToString(),
                 FirstName = quizInfo.Owner.FirstName,
                 LastName = quizInfo.Owner.LastName,
                 AvatarBlobKey = FileUtils.GetContent(quizInfo.Owner.AvatarPath)

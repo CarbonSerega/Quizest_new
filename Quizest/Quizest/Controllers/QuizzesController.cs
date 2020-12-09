@@ -55,6 +55,8 @@ namespace Quizest.Controllers
         [HttpGet("generated/{temporaryLinkParam}")]
         public IActionResult GetQuizByTemporaryLink(string temporaryLinkParam)
         {
+            /* To do: Create temp user and link the quiz info with it */
+
             var quizInfo = manager.Repository<QuizInfo>().FindBy(q => q.TemporaryLink.Equals(temporaryLinkParam)).SingleOrDefault();
 
             if(quizInfo == null)
@@ -98,6 +100,7 @@ namespace Quizest.Controllers
                 return BadRequest(Constants.OwnerNull);
             }
 
+            /*Will be changed in the future accroding to User Identity */
             quizInfoEntity.Owner =  manager.Repository<User>()
                 .FindBy(u => u.Id == quizInfoEntity.OwnerId.Value).SingleOrDefault();
 
@@ -125,6 +128,12 @@ namespace Quizest.Controllers
             return CreatedAtRoute("QuizInfoById", new { id = result.Id }, result);
         }
 
+
+        //[HttpPut("{id}")]
+        //public IActionResult UpdateQuiz(Guid id, [FromForm] QuizInfoForCreationDto quizInfoForCreationDto)
+        //{
+
+        //}
         
 
 
