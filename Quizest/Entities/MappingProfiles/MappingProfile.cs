@@ -30,8 +30,6 @@ namespace Entities.MappingProfiles
 
                 .ForMember(q => q.Duration, opt => opt.MapFrom(o => DateTimeUtils.ToDuration(o.Duration)))
 
-                .ForMember(q => q.TemporaryLink, opt => opt.MapFrom(o => o.TemporaryLink.Link))
-
                 .ForMember(q => q.PreviewBlobKey, opt => opt.MapFrom(o => FileUtils.GetContent(o.PreviewPath)));
 
 

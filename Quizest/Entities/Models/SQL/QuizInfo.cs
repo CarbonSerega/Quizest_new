@@ -51,14 +51,11 @@ namespace Entities.Models.SQL
         [ForeignKey(nameof(OwnerId))]
         public Guid? OwnerId { get; set; }
 
-        [JsonIgnore]
-        public virtual TemporaryLink TemporaryLink { get; set; }
-
-        [ForeignKey(nameof(TemporaryLinkId))]
-        public Guid? TemporaryLinkId { get; set; }
+        public string TemporaryLink { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<QuizInfoUser> QuizInfoUsers { get; set; }
+
 
         private IEnumerable<Guid> userIds;
 

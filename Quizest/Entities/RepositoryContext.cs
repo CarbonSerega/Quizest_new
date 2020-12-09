@@ -17,8 +17,6 @@ namespace Entities
 
         public DbSet<AnswerInfo> AnswerInfos { get; set; }
 
-        public DbSet<TemporaryLink> TemporaryLinks { get; set; }
-
         public DbSet<GlobalSettings> GlobalSettings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,8 +24,8 @@ namespace Entities
             modelBuilder.Entity<QuizInfoUser>()
                 .HasKey(qu => new { qu.QuizInfoId, qu.UserId });
 
-            modelBuilder.Entity<TemporaryLink>()
-                .HasIndex(t => t.Link).IsUnique();
+            modelBuilder.Entity<QuizInfo>()
+                .HasIndex(t => t.TemporaryLink).IsUnique();
 
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new QuizInfoUserConfiguration());

@@ -70,6 +70,16 @@ namespace Utility
             return relative;
         }
 
+        public static void Remove(string path)
+        {
+            path = BasePath + path;
+
+            if(File.Exists(path))
+            {
+                File.Delete(path);
+            }
+        }
+
         public static bool IsPreviewValid(IFormFile file)
         {
             string extension = Path.GetExtension(file.FileName);

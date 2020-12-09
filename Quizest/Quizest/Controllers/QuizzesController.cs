@@ -55,7 +55,7 @@ namespace Quizest.Controllers
         [HttpGet("generated/{temporaryLinkParam}")]
         public IActionResult GetQuizByTemporaryLink(string temporaryLinkParam)
         {
-            var quizInfo = manager.Repository<QuizInfo>().FindBy(q => q.TemporaryLink.Link.Equals(temporaryLinkParam)).SingleOrDefault();
+            var quizInfo = manager.Repository<QuizInfo>().FindBy(q => q.TemporaryLink.Equals(temporaryLinkParam)).SingleOrDefault();
 
             if(quizInfo == null)
             {
@@ -89,12 +89,7 @@ namespace Quizest.Controllers
 
             string queryParam = RandomGenerator.GenerateHexKey();
 
-            var temporaryLink = await manager.Repository<TemporaryLink>().Create(new TemporaryLink
-            {
-                Link = queryParam
-            });
-
-            quizInfoEntity.TemporaryLink = temporaryLink.Entity;
+            quizInfoEntity.TemporaryLink = queryParam;
 
             quizInfoEntity.CreatedAt = DateTime.Now;
 
@@ -125,9 +120,35 @@ namespace Quizest.Controllers
 
             var request = HttpContext.Request;
 
-            result.TemporaryLink = LinkUtils.GenerateTemporaryLink(request.IsHttps, request.Host.Value, request.Path, queryParam); ;
+            result.TemporaryLink = LinkUtils.GenerateTemporaryLink(request.IsHttps, request.Host.Value, request.Path, queryParam);
 
             return CreatedAtRoute("QuizInfoById", new { id = result.Id }, result);
+        }
+
+        
+
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteQuiz(Guid id)
+        {
+            var quiz = manager.Repository<QuizInfo>().FindBy(q => q.Id == id).SingleOrDefault();
+
+            if(quiz == null)
+            {
+                return NotFound(Constants.QuizDoesNotExist(id));
+            }
+
+            FileUtils.Remove(quiz.PreviewPath);
+
+            string mongoId = quiz.QuizId;
+
+            manager.Repository<QuizInfo>().Delete(quiz);
+
+            manager.Save();
+
+            mongo.Remove(mongoId.ToLower());
+
+            return NoContent();
         }
     }
 }
