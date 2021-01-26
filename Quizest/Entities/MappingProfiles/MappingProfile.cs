@@ -34,6 +34,8 @@ namespace Entities.MappingProfiles
 
 
             _ = CreateMap<QuizInfoForCreationDto, QuizInfo>();
+
+            _ = CreateMap<QuizInfoForCreationDto, QuizInfo>().ReverseMap();
         }
 
         private OwnerShortInfoDto CreateOwnerShortInfoDto(QuizInfo quizInfo)

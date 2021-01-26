@@ -80,6 +80,12 @@ namespace Utility
             }
         }
 
+        public static async Task<string> UpdateAsync(string dirType, string oldPath, IFormFile formFile)
+        {
+            Remove(oldPath);
+            return await SaveAsync(dirType, formFile);
+        }
+
         public static bool IsPreviewValid(IFormFile file)
         {
             string extension = Path.GetExtension(file.FileName);

@@ -21,7 +21,7 @@ namespace Quizest.Extensions
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
                     if (contextFeature != null)
                     {
-                        logger.LogError(contextFeature.Error.Message);
+                        logger.LogError(contextFeature.Error.ToString());
                         await context.Response.WriteAsync(new Error()
                         {
                             StatusCode = context.Response.StatusCode,

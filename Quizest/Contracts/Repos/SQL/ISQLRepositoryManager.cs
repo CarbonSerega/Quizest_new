@@ -7,5 +7,7 @@ namespace Contracts
         ISQLRepositoryBase<T> Repository<T>() where T : SqlEntityBase;
 
         void Save();
+
+        void Detach();
     }
 }

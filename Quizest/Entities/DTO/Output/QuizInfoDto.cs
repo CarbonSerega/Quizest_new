@@ -34,6 +34,8 @@ namespace Entities.DTO
 
         public int? AttemptCount { get; set; }
 
+        public bool HasAccessToEdit { get; set; }
+
         public OwnerShortInfoDto Owner { get; set; }
     }
 }

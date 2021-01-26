@@ -7,6 +7,7 @@ using Contracts;
 using Contracts.Repos.Mongo;
 using Entities.DTO;
 using Entities.Models.SQL;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Utility;
 
@@ -63,7 +64,7 @@ namespace Quizest.Controllers
             {
                 return NotFound(Constants.QuizUnderLinkDoesNotExist(temporaryLinkParam));
             }
-
+            
             var quizInfoDto = mapper.Map<QuizInfoDto>(quizInfo);
 
             return Ok(quizInfoDto);
@@ -101,8 +102,7 @@ namespace Quizest.Controllers
             }
 
             /*Will be changed in the future accroding to User Identity */
-            quizInfoEntity.Owner =  manager.Repository<User>()
-                .FindBy(u => u.Id == quizInfoEntity.OwnerId.Value).SingleOrDefault();
+            quizInfoEntity.Owner = manager.Repository<User>().FindBy(u => u.Id == quizInfoEntity.OwnerId).SingleOrDefault();
 
             string mongoId = RandomGenerator.GenerateHexKey();
 
@@ -125,16 +125,94 @@ namespace Quizest.Controllers
 
             result.TemporaryLink = LinkUtils.GenerateTemporaryLink(request.IsHttps, request.Host.Value, request.Path, queryParam);
 
+            // It will be changed according to the User Identity
+            result.HasAccessToEdit = true;
+
             return CreatedAtRoute("QuizInfoById", new { id = result.Id }, result);
         }
 
 
-        //[HttpPut("{id}")]
-        //public IActionResult UpdateQuiz(Guid id, [FromForm] QuizInfoForCreationDto quizInfoForCreationDto)
-        //{
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateQuiz(Guid id, [FromForm] QuizInfoForCreationDto updatedQuizInfo)
+        {
+            if (updatedQuizInfo == null)
+            {
+                return BadRequest(Constants.QuizDataEmpty);
+            }
 
-        //}
-        
+            var oldQuizInfo = manager.Repository<QuizInfo>().FindBy(q => q.Id == id).SingleOrDefault();
+
+            if (oldQuizInfo == null)
+            {
+                return BadRequest(Constants.QuizDoesNotExist(id));
+            }
+
+            var quizInfoEntity = mapper.Map<QuizInfo>(updatedQuizInfo);
+
+            if (updatedQuizInfo.PreviewImage != null)
+            {
+                if (!FileUtils.IsPreviewValid(updatedQuizInfo.PreviewImage))
+                {
+                    return BadRequest(Constants.InvalidImage);
+                }
+
+                quizInfoEntity.PreviewPath = await FileUtils.UpdateAsync(DirType.Previews, oldQuizInfo.PreviewPath, updatedQuizInfo.PreviewImage);
+            }
+            else
+            {
+                FileUtils.Remove(oldQuizInfo.PreviewPath);
+                quizInfoEntity.PreviewPath = string.Empty;
+            }
+
+            //Possible replacements in the future
+
+            quizInfoEntity.Id = id;
+
+            quizInfoEntity.OwnerId = oldQuizInfo.OwnerId;
+
+            quizInfoEntity.Owner = oldQuizInfo.Owner;
+
+            quizInfoEntity.UpdatedAt = DateTime.Now;
+
+            quizInfoEntity.TemporaryLink = oldQuizInfo.TemporaryLink;
+
+            quizInfoEntity.QuizId = oldQuizInfo.QuizId;
+
+            manager.Detach();
+
+            manager.Repository<QuizInfo>().Update(quizInfoEntity);
+
+            manager.Save();
+
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        public IActionResult PatchRequest(Guid id, [FromBody] JsonPatchDocument<QuizInfoForCreationDto> quizInfoPatch)
+        {
+            if (quizInfoPatch == null)
+            {
+                return BadRequest(Constants.QuizDataEmpty);
+            }
+
+            var oldQuizInfo = manager.Repository<QuizInfo>().FindBy(q => q.Id == id).SingleOrDefault();
+
+            if (oldQuizInfo == null)
+            {
+                return BadRequest(Constants.QuizDoesNotExist(id));
+            }
+
+            var quizInfoToPatch = mapper.Map<QuizInfoForCreationDto>(oldQuizInfo);
+
+            quizInfoPatch.ApplyTo(quizInfoToPatch);
+
+            mapper.Map(quizInfoToPatch, oldQuizInfo);
+
+            manager.Save();
+
+            return NoContent();
+        }
+
 
 
         [HttpDelete("{id}")]

@@ -17,5 +17,7 @@ namespace Repository
             new SQLRepositoryBase<T>(repositoryContext);
         
         public void Save() => repositoryContext.SaveChanges();
+
+        public void Detach() => repositoryContext.ChangeTracker.Clear();
     }
 }

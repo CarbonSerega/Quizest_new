@@ -56,12 +56,6 @@ namespace Entities.Models.SQL
 
         public string TemporaryLink { get; set; }
 
-        [NotMapped]
-        public bool HasAccessToEdit { get; set; }
-
-        [NotMapped]
-        public bool HasAccessToPass { get; set; }
-
         [JsonIgnore]
         public virtual ICollection<QuizInfoUser> QuizInfoUsers { get; set; }
 
